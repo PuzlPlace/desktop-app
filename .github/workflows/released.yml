@@ -1,0 +1,21 @@
+name: Enviar notificação de atualização para os clientes
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  send-http-request:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send HTTP request
+      uses: actions/http@v1
+      with:
+        url: https://example.com/api/v1/releases
+        method: POST
+        body: |
+          {
+            "version": "${{ steps.get-release.outputs.tag }}"
+          }
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
